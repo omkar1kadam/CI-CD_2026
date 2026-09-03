@@ -12,25 +12,32 @@ pipeline {
         stage('Environment Check') {
             steps {
                 sh '''
-                    echo "===== Jenkins Environment ====="
+                    echo "======================================"
+                    echo "        JENKINS ENVIRONMENT"
+                    echo "======================================"
+
+                    echo ""
                     echo "User:"
                     whoami
 
                     echo ""
                     echo "PATH:"
-                    echo $PATH
+                    echo "$PATH"
 
                     echo ""
                     echo "Java:"
-                    java -version || true
-
-                    echo ""
-                    echo "Maven location:"
-                    which mvn || true
+                    java -version
 
                     echo ""
                     echo "Maven:"
-                    mvn -version || true
+                    if command -v mvn >/dev/null 2>&1; then
+                        mvn -version
+                    else
+                        echo "Maven NOT FOUND in Jenkins PATH"
+                    fi
+
+                    echo ""
+                    echo "======================================"
                 '''
             }
         }
@@ -56,15 +63,15 @@ pipeline {
 
     post {
         success {
-            echo '✅ CI Pipeline completed successfully!'
+            echo 'CI Pipeline completed successfully!'
         }
 
         failure {
-            echo '❌ CI Pipeline failed!'
+            echo 'CI Pipeline failed!'
         }
 
         always {
-            echo '🏁 Jenkins pipeline finished.'
+            echo 'Jenkins pipeline finished.'
         }
     }
 }
