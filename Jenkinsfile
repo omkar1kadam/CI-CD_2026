@@ -1,0 +1,49 @@
+pipeline {
+    agent any
+
+    tools {
+        jdk 'JDK17'
+        maven 'Maven'
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'mvn clean compile'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+
+        stage('Run Application') {
+            steps {
+                sh 'mvn compile exec:java -Dexec.mainClass=com.omkar1kadam.primes.Main'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo '✅ CI Pipeline completed successfully!'
+        }
+
+        failure {
+            echo '❌ CI Pipeline failed!'
+        }
+
+        always {
+            echo '🏁 Jenkins pipeline finished.'
+        }
+    }
+}
