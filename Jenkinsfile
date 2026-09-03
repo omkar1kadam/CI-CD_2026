@@ -1,11 +1,6 @@
 pipeline {
     agent any
 
-    tools {
-        jdk 'JDK17'
-        maven 'Maven'
-    }
-
     stages {
 
         stage('Checkout') {
@@ -28,7 +23,7 @@ pipeline {
 
         stage('Run Application') {
             steps {
-                sh 'mvn compile exec:java -Dexec.mainClass=com.omkar1kadam.primes.Main'
+                sh 'mvn exec:java -Dexec.mainClass=com.omkar1kadam.primes.Main'
             }
         }
     }
