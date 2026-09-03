@@ -9,6 +9,32 @@ pipeline {
             }
         }
 
+        stage('Environment Check') {
+            steps {
+                sh '''
+                    echo "===== Jenkins Environment ====="
+                    echo "User:"
+                    whoami
+
+                    echo ""
+                    echo "PATH:"
+                    echo $PATH
+
+                    echo ""
+                    echo "Java:"
+                    java -version || true
+
+                    echo ""
+                    echo "Maven location:"
+                    which mvn || true
+
+                    echo ""
+                    echo "Maven:"
+                    mvn -version || true
+                '''
+            }
+        }
+
         stage('Build') {
             steps {
                 sh 'mvn clean compile'
